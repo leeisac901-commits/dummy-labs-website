@@ -58,3 +58,67 @@ body {
 .prose-blog pre { background: #0C1220; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1.25rem; }
 .prose-blog pre code { background: none; padding: 0; color: #cbd5e1; font-size: 0.875rem; }
 .prose-blog hr { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 2rem 0; }
+
+/* ── Ambient orbs ───────────────────────────────────────────── */
+.orb {
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(130px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-drift var(--orb-dur, 24s) ease-in-out infinite alternate;
+}
+.orb-cyan {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, #00C8F0 0%, transparent 65%);
+  top: -250px; left: -200px;
+  opacity: 0.09;
+  --orb-dur: 28s;
+}
+.orb-violet {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #7c3aed 0%, transparent 65%);
+  bottom: -180px; right: -150px;
+  opacity: 0.08;
+  --orb-dur: 34s;
+  animation-delay: -14s;
+}
+@keyframes orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(70px, 50px) scale(1.1); }
+}
+
+/* ── Gradient text ──────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #00C8F0 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Marquee ticker ─────────────────────────────────────────── */
+.ticker-inner {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 50s linear infinite;
+}
+.ticker-inner:hover { animation-play-state: paused; }
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Staggered reveal ───────────────────────────────────────── */
+.reveal   { animation: fade-up 0.7s 0.05s ease both; }
+.reveal-2 { animation: fade-up 0.7s 0.20s ease both; }
+.reveal-3 { animation: fade-up 0.7s 0.35s ease both; }
+.reveal-4 { animation: fade-up 0.7s 0.50s ease both; }
+.reveal-5 { animation: fade-up 0.7s 0.65s ease both; }
+
+/* ── Product card featured border glow ─────────────────────── */
+.card-featured {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-featured:hover {
+  box-shadow: 0 0 0 1px rgba(0,200,240,0.15), 0 0 60px rgba(0,200,240,0.04), 0 20px 60px rgba(0,0,0,0.3);
+}
