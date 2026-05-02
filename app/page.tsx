@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const TICKER_WORDS = ['SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT', 'SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT', 'SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT', 'SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT']
 
@@ -14,8 +15,8 @@ export default function Home() {
       <header className="sticky top-0 z-50 border-b border-white/[0.05]" style={{ backdropFilter: 'blur(20px)', background: 'rgba(5,9,20,0.75)' }}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-cyan-400/20 bg-cyan-400/[0.06] group-hover:border-cyan-400/40 group-hover:bg-cyan-400/10 transition-all">
-              <span className="font-mono text-[11px] font-bold text-cyan-400">DL</span>
+            <div className="w-8 h-8 rounded-lg overflow-hidden border border-cyan-400/20 group-hover:border-cyan-400/40 transition-all">
+              <Image src="/brand/dummy-labs-icon.png" alt="Dummy Labs" width={32} height={32} className="w-full h-full object-cover" />
             </div>
             <span className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-white">Dummy Labs</span>
           </Link>
