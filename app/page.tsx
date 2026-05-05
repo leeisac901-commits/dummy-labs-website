@@ -1,7 +1,37 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import shipsData from '@/content/ships.json'
 
 const TICKER_WORDS = ['SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT', 'SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT', 'SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT', 'SHIP', 'BUILD', 'LAUNCH', 'ITERATE', 'REPEAT']
+
+type Ship = {
+  slug: string
+  name: string
+  tagline: string
+  description: string
+  url: string | null
+  status: 'live' | 'scaffolded' | 'iterating' | 'dead'
+  shippedDate: string | null
+  icon: string
+  pricing: string
+}
+
+const ships = (shipsData.ships as Ship[]).filter(s => s.status !== 'dead')
+const featuredShip = ships.find(s => s.status === 'live') ?? ships[0]
+const otherShips = ships.filter(s => s.slug !== featuredShip?.slug)
+
+const STATUS_BADGE: Record<Ship['status'], { dot: string; text: string; label: string }> = {
+  live:       { dot: 'bg-emerald-400',  text: 'text-emerald-400',  label: 'Live' },
+  iterating:  { dot: 'bg-cyan-400',     text: 'text-cyan-400',     label: 'Iterating' },
+  scaffolded: { dot: 'bg-amber-400',    text: 'text-amber-400',    label: 'Coming soon' },
+  dead:       { dot: 'bg-slate-600',    text: 'text-slate-600',    label: 'Archived' },
+}
+
+function formatShippedDate(date: string | null): string {
+  if (!date) return ''
+  const d = new Date(date + 'T00:00:00Z')
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+}
 
 export default function Home() {
   return (
@@ -32,10 +62,17 @@ export default function Home() {
                 {label}
               </a>
             ))}
-            <a href="https://vibescan-gamma.vercel.app" target="_blank" rel="noopener noreferrer"
-              className="font-mono text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-lg border border-cyan-400/25 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all">
-              Try VibeScan →
-            </a>
+            {featuredShip?.url ? (
+              <a href={featuredShip.url} target="_blank" rel="noopener noreferrer"
+                className="font-mono text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-lg border border-cyan-400/25 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all">
+                Try {featuredShip.name} →
+              </a>
+            ) : (
+              <a href="#products"
+                className="font-mono text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-lg border border-cyan-400/25 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all">
+                See products →
+              </a>
+            )}
           </nav>
         </div>
       </header>
@@ -113,59 +150,92 @@ export default function Home() {
             <h2 className="text-4xl font-bold text-white">What we&apos;ve shipped</h2>
           </div>
 
-          {/* VibeScan — featured */}
-          <a href="https://vibescan-gamma.vercel.app" target="_blank" rel="noopener noreferrer"
-            className="card-featured group block rounded-2xl border border-white/[0.07] bg-gradient-to-br from-[#0a1525] to-[#060c18] p-8 sm:p-10 mb-5 hover:border-cyan-400/20">
-
-            <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-cyan-400/[0.08] border border-cyan-400/15 flex items-center justify-center text-2xl">
-                  🛡️
+          {/* Featured ship */}
+          {featuredShip && (() => {
+            const badge = STATUS_BADGE[featuredShip.status]
+            const FeaturedTag = featuredShip.url ? 'a' : 'div'
+            const featuredProps = featuredShip.url
+              ? { href: featuredShip.url, target: '_blank' as const, rel: 'noopener noreferrer' }
+              : {}
+            return (
+              <FeaturedTag {...featuredProps}
+                className="card-featured group block rounded-2xl border border-white/[0.07] bg-gradient-to-br from-[#0a1525] to-[#060c18] p-8 sm:p-10 mb-5 hover:border-cyan-400/20">
+                <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-cyan-400/[0.08] border border-cyan-400/15 flex items-center justify-center text-2xl">
+                      {featuredShip.icon}
+                    </div>
+                    <div>
+                      <div className="text-xl font-bold text-white">{featuredShip.name}</div>
+                      <div className="font-mono text-[10px] tracking-widest uppercase text-cyan-400/60 mt-0.5">
+                        {featuredShip.shippedDate ? `Shipped ${formatShippedDate(featuredShip.shippedDate)}` : 'In development'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border bg-white/[0.02] ${
+                    featuredShip.status === 'live' ? 'border-emerald-400/20' :
+                    featuredShip.status === 'iterating' ? 'border-cyan-400/20' :
+                    'border-amber-400/20'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
+                    <span className={`font-mono text-[10px] tracking-widest uppercase ${badge.text}`}>{badge.label}</span>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-xl font-bold text-white">VibeScan</div>
-                  <div className="font-mono text-[10px] tracking-widest uppercase text-cyan-400/60 mt-0.5">Shipped Apr 30, 2026</div>
+
+                <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-3 leading-snug">
+                  {featuredShip.tagline}
+                </h3>
+                <p className="text-slate-400 leading-relaxed max-w-2xl mb-10">
+                  {featuredShip.description}
+                </p>
+
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-2 font-mono text-sm text-slate-500 group-hover:text-cyan-400 transition-colors">
+                    {featuredShip.url ? 'Open product' : 'Coming soon'}
+                    {featuredShip.url && <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>}
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <span className="font-mono text-[10px] text-slate-700 tracking-wider">{featuredShip.pricing}</span>
+                  </div>
                 </div>
-              </div>
+              </FeaturedTag>
+            )
+          })()}
 
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06]">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="font-mono text-[10px] tracking-widest uppercase text-emerald-400">Live</span>
-              </div>
+          {/* Other ships in grid */}
+          {otherShips.length > 0 && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {otherShips.map(ship => {
+                const badge = STATUS_BADGE[ship.status]
+                const Tag = ship.url ? 'a' : 'div'
+                const props = ship.url
+                  ? { href: ship.url, target: '_blank' as const, rel: 'noopener noreferrer' }
+                  : {}
+                return (
+                  <Tag key={ship.slug} {...props}
+                    className={`group block rounded-2xl border border-white/[0.06] bg-[#060c18]/70 p-7 transition-all ${
+                      ship.url ? 'hover:border-cyan-400/20 hover:bg-[#0a1525]' : ''
+                    }`}>
+                    <div className="flex items-start justify-between mb-5 gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-cyan-400/[0.06] border border-cyan-400/10 flex items-center justify-center text-xl">
+                        {ship.icon}
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border bg-white/[0.02] border-white/[0.06]">
+                        <span className={`w-1 h-1 rounded-full ${badge.dot}`} />
+                        <span className={`font-mono text-[9px] tracking-widest uppercase ${badge.text}`}>{badge.label}</span>
+                      </div>
+                    </div>
+                    <div className="text-base font-semibold text-white mb-1">{ship.name}</div>
+                    <div className="text-sm text-slate-400 leading-relaxed mb-4 line-clamp-3">{ship.tagline}</div>
+                    <div className="flex items-center justify-between font-mono text-[9px] text-slate-700 tracking-wider">
+                      <span>{ship.pricing}</span>
+                      {ship.url && <span className="group-hover:text-cyan-400 transition-colors">Open →</span>}
+                    </div>
+                  </Tag>
+                )
+              })}
             </div>
-
-            <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-3 leading-snug">
-              Security scanner for AI-generated code
-            </h3>
-            <p className="text-slate-400 leading-relaxed max-w-2xl mb-10">
-              Paste any AI-generated code and get an instant security audit. Finds real vulnerabilities — SQL injection,
-              XSS, exposed credentials, insecure APIs — before they reach production. Built for teams shipping with AI speed.
-            </p>
-
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-2 font-mono text-sm text-slate-500 group-hover:text-cyan-400 transition-colors">
-                Open product
-                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-              </div>
-              <div className="flex items-center gap-6">
-                <span className="font-mono text-[10px] text-slate-700 tracking-wider">Pro · $29/mo</span>
-                <span className="font-mono text-[10px] text-slate-700 tracking-wider">21 tests · passing</span>
-              </div>
-            </div>
-          </a>
-
-          {/* Coming soon */}
-          <div className="grid sm:grid-cols-3 gap-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="rounded-2xl border border-white/[0.04] bg-[#060c18]/70 p-7 opacity-35">
-                <div className="w-9 h-9 rounded-lg bg-white/[0.04] mb-5" />
-                <div className="h-4 bg-white/[0.04] rounded-lg w-3/5 mb-3" />
-                <div className="h-3 bg-white/[0.02] rounded-lg w-full mb-2" />
-                <div className="h-3 bg-white/[0.02] rounded-lg w-4/5 mb-6" />
-                <div className="font-mono text-[9px] tracking-[0.25em] uppercase text-slate-700">Coming this week</div>
-              </div>
-            ))}
-          </div>
+          )}
         </div>
       </section>
 
