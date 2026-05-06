@@ -17,6 +17,7 @@ type Ship = {
 }
 
 const ships = (shipsData.ships as Ship[]).filter(s => s.status !== 'dead')
+const liveShipCount = ships.filter(s => s.status === 'live').length
 const featuredShip = ships.find(s => s.status === 'live') ?? ships[0]
 const otherShips = ships.filter(s => s.slug !== featuredShip?.slug)
 
@@ -85,7 +86,7 @@ export default function Home() {
           <span className="w-2 h-2 rounded-full bg-emerald-400 status-dot" />
           <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-slate-400">Operational</span>
           <span className="w-px h-3 bg-white/10" />
-          <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-cyan-400">1 product live</span>
+          <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-cyan-400">{liveShipCount} product{liveShipCount === 1 ? '' : 's'} live</span>
         </div>
 
         {/* Headline */}
@@ -118,10 +119,10 @@ export default function Home() {
         {/* Stats */}
         <div className="reveal-5 w-full max-w-2xl grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-white/[0.06] bg-white/[0.03]">
           {[
-            { value: '1',  label: 'Products shipped', note: 'and counting' },
-            { value: '5×', label: 'Ships per week',   note: 'Mon – Fri' },
-            { value: '$0', label: 'MRR today',        note: 'day 3, honest' },
-            { value: '3',  label: 'Day streak',       note: 'unbroken' },
+            { value: String(liveShipCount), label: 'Products live',   note: 'and counting' },
+            { value: '5×',                  label: 'Ships per week',  note: 'Mon – Fri' },
+            { value: '$0',                  label: 'MRR today',       note: 'verified soon' },
+            { value: String(ships.length),  label: 'Total shipped',   note: 'all-time' },
           ].map((s) => (
             <div key={s.label} className="group bg-[#080d1c] px-5 py-6 hover:bg-[#0c1428] transition-colors cursor-default">
               <div className="font-mono text-2xl font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">{s.value}</div>
