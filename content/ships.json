@@ -2,6 +2,17 @@
   "$schema": "Ship list rendered on dummy-labs.com. Routines append entries here when SHIPPED=true. Status values: 'live' (deployed + payment-functional + public URL) | 'scaffolded' (code complete, deploy pending) | 'iterating' (post-launch improvements in flight) | 'dead' (killed).",
   "ships": [
     {
+      "slug": "aibudget",
+      "name": "AIBudget",
+      "tagline": "AI tool cost calculator for engineering teams",
+      "description": "Pick from 31 AI tools across 4 categories, set seat counts and usage tiers (light/standard/heavy), get a live monthly burn-rate forecast. Built for finance + eng leads who got burned by GitHub Copilot's June 1 usage-based billing switch. Email-gated PDF export.",
+      "url": "https://aibudget-drab.vercel.app",
+      "status": "live",
+      "shippedDate": "2026-05-05",
+      "icon": "💰",
+      "pricing": "$29 one-time"
+    },
+    {
       "slug": "vibescan",
       "name": "VibeScan",
       "tagline": "Security scanner for AI-generated code",
