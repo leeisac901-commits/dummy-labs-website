@@ -17,9 +17,9 @@
       "name": "SecretScan",
       "tagline": "Find hardcoded secrets in AI-generated code",
       "description": "60+ regex patterns + Shannon entropy analysis catch leaked API keys, tokens, and credentials. Runs 100% in your browser — your code never leaves the page.",
-      "url": null,
-      "status": "scaffolded",
-      "shippedDate": null,
+      "url": "https://secretscan-five.vercel.app",
+      "status": "live",
+      "shippedDate": "2026-05-06",
       "icon": "🔑",
       "pricing": "Pro · $9/mo"
     },
@@ -28,9 +28,9 @@
       "name": "SlopsquatGuard",
       "tagline": "Catch AI-hallucinated npm packages before install",
       "description": "Scans your package.json against the live npm registry to catch slopsquatting — the attack vector exploiting LLMs that hallucinate non-existent package names. 19.7% of LLM-generated dependencies don't exist; some attackers pre-register those names with malware.",
-      "url": null,
-      "status": "scaffolded",
-      "shippedDate": null,
+      "url": "https://slopsquatguard.vercel.app",
+      "status": "live",
+      "shippedDate": "2026-05-06",
       "icon": "📦",
       "pricing": "Pro · $9/mo"
     },
@@ -39,9 +39,9 @@
       "name": "DepShield",
       "tagline": "Typosquat and suspicious-package detector",
       "description": "Catches typosquatted dependencies, deprecated packages, and supply-chain anomalies before they enter your dependency tree. Levenshtein-distance scoring against the top 300 npm packages.",
-      "url": null,
-      "status": "scaffolded",
-      "shippedDate": null,
+      "url": "https://depshield-eight.vercel.app",
+      "status": "live",
+      "shippedDate": "2026-05-06",
       "icon": "🔒",
       "pricing": "Pro · $29/mo"
     }
