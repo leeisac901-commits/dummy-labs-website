@@ -1,5 +1,5 @@
 {
-  "$schema": "Ship list rendered on dummy-labs.com. Routines append entries here when SHIPPED=true. Status values: 'live' (deployed + payment-functional + public URL) | 'scaffolded' (code complete, deploy pending) | 'iterating' (post-launch improvements in flight) | 'dead' (killed).",
+  "$schema": "Ship list rendered on dummy-labs.com. Routines append entries here when SHIPPED=true. Status values: 'live' (deployed + payment-functional + public URL) | 'scaffolded' (code complete, deploy pending) | 'iterating' (post-launch improvements in flight) | 'dead' (killed). Optional 'color' field is the hex of the ship's brand accent (see daily-ship/docs/playbooks/design-system.md) — used by the landing page card to give each ship its own identity.",
   "ships": [
     {
       "slug": "aibudget",
@@ -10,7 +10,8 @@
       "status": "live",
       "shippedDate": "2026-05-05",
       "icon": "💰",
-      "pricing": "$29 one-time"
+      "pricing": "$29 one-time",
+      "color": "#34d399"
     },
     {
       "slug": "vibescan",
@@ -21,7 +22,8 @@
       "status": "live",
       "shippedDate": "2026-04-30",
       "icon": "🛡️",
-      "pricing": "Pro · $29/mo"
+      "pricing": "Pro · $29/mo",
+      "color": "#00ff88"
     },
     {
       "slug": "secretscan",
@@ -32,7 +34,8 @@
       "status": "live",
       "shippedDate": "2026-05-06",
       "icon": "🔑",
-      "pricing": "Pro · $9/mo"
+      "pricing": "Pro · $9/mo",
+      "color": "#ff8a3d"
     },
     {
       "slug": "slopsquatguard",
@@ -43,7 +46,8 @@
       "status": "live",
       "shippedDate": "2026-05-06",
       "icon": "📦",
-      "pricing": "Pro · $9/mo"
+      "pricing": "Pro · $9/mo",
+      "color": "#10b981"
     },
     {
       "slug": "depshield",
@@ -54,7 +58,8 @@
       "status": "live",
       "shippedDate": "2026-05-06",
       "icon": "🔒",
-      "pricing": "Pro · $29/mo"
+      "pricing": "Pro · $29/mo",
+      "color": "#a78bfa"
     }
   ]
 }

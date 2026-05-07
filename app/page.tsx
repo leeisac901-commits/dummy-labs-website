@@ -212,13 +212,22 @@ export default function Home() {
                 const props = ship.url
                   ? { href: ship.url, target: '_blank' as const, rel: 'noopener noreferrer' }
                   : {}
+                // Per-ship brand color (falls back to cyan when missing).
+                // Defined in content/ships.json `color` field — see daily-ship/docs/playbooks/design-system.md.
+                const brand = (ship as { color?: string }).color || '#22d3ee'
+                const brandStyle = { borderColor: `${brand}26`, background: `${brand}0d` }
                 return (
                   <Tag key={ship.slug} {...props}
-                    className={`group block rounded-2xl border border-white/[0.06] bg-[#060c18]/70 p-7 transition-all ${
-                      ship.url ? 'hover:border-cyan-400/20 hover:bg-[#0a1525]' : ''
-                    }`}>
+                    className="group block rounded-2xl border border-white/[0.06] bg-[#060c18]/70 p-7 transition-all hover:bg-[#0a1525]"
+                    style={ship.url ? { transition: 'all 0.2s ease' } : undefined}
+                    onMouseEnter={ship.url ? (e) => { (e.currentTarget as HTMLElement).style.borderColor = `${brand}40` } : undefined}
+                    onMouseLeave={ship.url ? (e) => { (e.currentTarget as HTMLElement).style.borderColor = '' } : undefined}
+                  >
                     <div className="flex items-start justify-between mb-5 gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-cyan-400/[0.06] border border-cyan-400/10 flex items-center justify-center text-xl">
+                      <div
+                        className="w-10 h-10 rounded-lg border flex items-center justify-center text-xl"
+                        style={brandStyle}
+                      >
                         {ship.icon}
                       </div>
                       <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border bg-white/[0.02] border-white/[0.06]">
@@ -230,7 +239,7 @@ export default function Home() {
                     <div className="text-sm text-slate-400 leading-relaxed mb-4 line-clamp-3">{ship.tagline}</div>
                     <div className="flex items-center justify-between font-mono text-[9px] text-slate-700 tracking-wider">
                       <span>{ship.pricing}</span>
-                      {ship.url && <span className="group-hover:text-cyan-400 transition-colors">Open →</span>}
+                      {ship.url && <span style={{ color: brand }} className="opacity-0 group-hover:opacity-100 transition-opacity">Open →</span>}
                     </div>
                   </Tag>
                 )
