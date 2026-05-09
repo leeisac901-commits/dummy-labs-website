@@ -60,6 +60,30 @@
       "icon": "🔒",
       "pricing": "Pro · $29/mo",
       "color": "#a78bfa"
+    },
+    {
+      "slug": "agentroster",
+      "name": "AgentRoster",
+      "tagline": "Know every AI agent running in your company before your boss asks.",
+      "description": "AI agent registry dashboard for IT managers and CTOs. Add your agents (name/owner/cost/data access), get auto risk scores, see total AI spend, download audit PDF. Built for the post-Microsoft-Agent-365 wave of <200-person companies that need governance without enterprise tooling.",
+      "url": "",
+      "status": "scaffolded",
+      "shippedDate": "2026-05-06",
+      "icon": "🤖",
+      "pricing": "Free up to 10 · $19/mo Starter · $39/mo Team",
+      "color": "#6366f1"
+    },
+    {
+      "slug": "envguard",
+      "name": "EnvGuard",
+      "tagline": "Audit your .env file for real secrets, placeholders, and service ownership.",
+      "description": "Paste a .env file, get entropy analysis to separate real secrets from placeholders, plus per-line service identification (50+ services across AI/LLM, payments, cloud, auth, email, monitoring). 100% client-side — your secrets never leave the page. Email-gated PDF report on real-secret detection.",
+      "url": "",
+      "status": "scaffolded",
+      "shippedDate": "2026-05-07",
+      "icon": "🔐",
+      "pricing": "Pro · $9/mo",
+      "color": "#f59e0b"
     }
   ]
 }
