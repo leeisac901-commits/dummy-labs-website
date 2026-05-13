@@ -1,0 +1,59 @@
+# Daily deploy of dummy-labs.com — safety net.
+#
+# Why this exists: the Vercel project for `website` is wired to GitHub
+# auto-deploy on push, but in May 2026 a Next 16 SSR build error caused
+# every deploy attempt to silently fail for 7 days while Vercel served
+# the last good cache. This workflow forces a redeploy daily so that
+# (a) silent build regressions surface within 24 hours and (b) any
+# content drift (ships.json updates from routines, blog posts) shows up
+# on the live site without owner intervention.
+#
+# ONE-TIME SETUP (Isac, ~30 seconds):
+#   1. Go to https://vercel.com/leeisac901-6166s-projects/website/settings/git
+#   2. Scroll to "Deploy Hooks" → Create Hook
+#   3. Name: "Daily auto-deploy"  Branch: "main"  → Create
+#   4. Copy the URL it shows (it starts https://api.vercel.com/v1/integrations/deploy/...)
+#   5. Go to https://github.com/leeisac901-commits/dummy-labs-website/settings/secrets/actions
+#   6. New repository secret. Name: VERCEL_DEPLOY_HOOK  Value: paste the URL from step 4
+#   7. Save. This workflow will start running tomorrow at 14:00 UTC.
+#
+# Once the secret exists, this fires nightly. No further owner action needed.
+#
+# Safety: VERCEL_DEPLOY_HOOK is a GitHub repo secret; never echoed; no
+# untrusted event-payload data is used anywhere in this workflow.
+
+name: Daily deploy
+
+on:
+  schedule:
+    # 14:00 UTC = 7am PT (after morning routine has potentially updated content)
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    # Manual trigger from the GitHub Actions tab — useful for verifying setup
+
+permissions:
+  contents: read
+
+jobs:
+  trigger-deploy:
+    name: Trigger Vercel production deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check VERCEL_DEPLOY_HOOK is configured
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::error::VERCEL_DEPLOY_HOOK secret is not set."
+            echo "See the header of this workflow file for the 30-second setup instructions."
+            exit 1
+          fi
+          echo "Deploy hook is configured."
+
+      - name: Fire deploy hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          response=$(curl -fsS -X POST "$DEPLOY_HOOK")
+          echo "Vercel response: $response"
+          echo "Deploy triggered. Build progress: https://vercel.com/leeisac901-6166s-projects/website"
