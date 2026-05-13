@@ -216,12 +216,15 @@ export default function Home() {
                 // Defined in content/ships.json `color` field — see daily-ship/docs/playbooks/design-system.md.
                 const brand = (ship as { color?: string }).color || '#22d3ee'
                 const brandStyle = { borderColor: `${brand}26`, background: `${brand}0d` }
+                // Hover border-color uses a CSS variable so the page stays a Server Component
+                // (Next 16 forbids onMouseEnter/Leave on server-rendered elements).
+                const tagStyle = ship.url
+                  ? ({ transition: 'all 0.2s ease', '--ship-brand-hover': `${brand}40` } as React.CSSProperties)
+                  : undefined
                 return (
                   <Tag key={ship.slug} {...props}
-                    className="group block rounded-2xl border border-white/[0.06] bg-[#060c18]/70 p-7 transition-all hover:bg-[#0a1525]"
-                    style={ship.url ? { transition: 'all 0.2s ease' } : undefined}
-                    onMouseEnter={ship.url ? (e) => { (e.currentTarget as HTMLElement).style.borderColor = `${brand}40` } : undefined}
-                    onMouseLeave={ship.url ? (e) => { (e.currentTarget as HTMLElement).style.borderColor = '' } : undefined}
+                    className={`group block rounded-2xl border border-white/6 bg-[#060c18]/70 p-7 transition-all hover:bg-[#0a1525] ${ship.url ? 'hover:border-(--ship-brand-hover)' : ''}`}
+                    style={tagStyle}
                   >
                     <div className="flex items-start justify-between mb-5 gap-3">
                       <div
