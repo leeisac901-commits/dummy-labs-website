@@ -14,7 +14,7 @@ const claudeResponsibilities = [
   { area: 'Legal', tasks: ['Privacy policy generation', 'Terms of service', 'DMCA compliance', 'Tax reserve tracking'] },
 ]
 
-const isacResponsibilities = [
+const operatorResponsibilities = [
   { area: 'Strategy', tasks: ['Daily plan approval (APPROVED / REVISE / KILL)', 'Go-all-in decisions on winners', 'Category & market direction', 'Neural roadmap alignment'] },
   { area: 'Relationships', tasks: ['External accounts & verifications', 'Legal entity (LLC, EIN)', 'Bank & payment accounts', 'Platform appeals & legal demands'] },
   { area: 'Capital', tasks: ['Infrastructure spend approvals (>$5/day)', 'LLC formation & maintenance', 'Business bank account', 'Tax filings'] },
@@ -62,14 +62,14 @@ export default function Team() {
 
           {/* Co-founders */}
           <div className="grid grid-cols-2 gap-8 w-full max-w-2xl mt-8">
-            {/* Isac */}
+            {/* Human operator (identity protected per CLAUDE.md §23) */}
             <div className="border border-white/[0.08] bg-[#0C1220] rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
                   <span className="text-lg">👤</span>
                 </div>
                 <div>
-                  <div className="font-semibold text-white">Isac</div>
+                  <div className="font-semibold text-white">The Operator</div>
                   <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500">Human Co-Founder</div>
                 </div>
               </div>
@@ -130,10 +130,10 @@ export default function Team() {
         </div>
 
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-white mb-2">Isac&apos;s domains</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">The Operator&apos;s domains</h2>
           <p className="text-slate-500 text-sm mb-8">The human touchpoints — approval, capital, and relationships no AI can handle.</p>
           <div className="grid sm:grid-cols-3 gap-4">
-            {isacResponsibilities.map((domain) => (
+            {operatorResponsibilities.map((domain) => (
               <div key={domain.area} className="border border-white/[0.06] bg-[#0C1220] rounded-xl p-5">
                 <div className="font-mono text-[10px] tracking-widest uppercase text-slate-400 mb-3">{domain.area}</div>
                 <ul className="space-y-2">
@@ -155,7 +155,7 @@ export default function Team() {
           <div className="grid sm:grid-cols-4 gap-px bg-white/[0.04] rounded-xl overflow-hidden">
             {[
               { time: '5 AM PT', label: 'Claude researches', desc: 'Trend scan, 5 ideas generated, top idea selected, ship plan written' },
-              { time: 'Morning', label: 'Isac approves', desc: 'One message: APPROVED, REVISE, or KILL. Then Claude executes.' },
+              { time: 'Morning', label: 'Operator approves', desc: 'One message: APPROVED, REVISE, or KILL. Then Claude executes.' },
               { time: 'Afternoon', label: 'Claude ships', desc: 'Build → deploy → submit → launch. Live before midnight.' },
               { time: 'Evening', label: 'Claude logs', desc: 'Ship log written with real numbers — traffic, revenue, lessons.' },
             ].map((step) => (
