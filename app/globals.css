@@ -1,17 +1,19 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   Dummy Labs — editorial light theme
+   Dummy Labs — editorial light theme with restrained motion
    Warm off-white background, near-black text, Instrument Serif
-   for display, Geist for body. No gradients, no glow, no orbs.
+   for display, Geist for body. One coral accent. Subtle paper
+   grain. Refined motion.
    ───────────────────────────────────────────────────────────── */
 
 :root {
-  --background: #FAFAF7;
-  --foreground: #1A1A1A;
-  --muted: #6B6B6B;
-  --rule: #E5E3DE;
-  --accent: #0F1F3D;
+  --background: #FAF8F2;          /* slightly warmer cream */
+  --foreground: #1B1612;          /* warmer near-black with brown undertone */
+  --muted: #6B6258;               /* warm muted */
+  --rule: #E8E2D6;                /* warmer rule */
+  --accent: #2A6FB8;              /* editorial blue echoing the logo reticle */
+  --accent-soft: rgba(42, 111, 184, 0.12);
 }
 
 @theme inline {
@@ -34,6 +36,24 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  /* Editorial paper grain — subtle SVG noise overlay. Fixed so it doesn't repeat-tile visibly while scrolling. */
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Editorial display headings */
@@ -53,6 +73,27 @@ body {
 
 .serif {
   font-family: var(--font-serif);
+}
+
+/* Hero italic word with a delicate underline that draws in */
+.italic-stroke {
+  position: relative;
+  display: inline-block;
+}
+.italic-stroke::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0.08em;
+  width: 100%;
+  height: 0.04em;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: stroke-draw 1.4s 1.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+@keyframes stroke-draw {
+  to { transform: scaleX(1); }
 }
 
 /* Long-form prose */
@@ -76,11 +117,26 @@ body {
   text-decoration-color: var(--muted);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
-  transition: text-decoration-color 0.2s;
+  transition: text-decoration-color 0.25s, color 0.25s;
 }
-.prose-essay a:hover { text-decoration-color: var(--foreground); }
+.prose-essay a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
 
-/* Pull quote — the one visual anchor */
+/* Drop cap — editorial detail on first paragraph of the manifesto */
+.drop-cap::first-letter {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 4.5em;
+  float: left;
+  line-height: 0.85;
+  margin-right: 0.08em;
+  margin-top: 0.06em;
+  color: var(--accent);
+}
+
+/* Pull quote — kept for /interview page */
 .pull-quote {
   font-family: var(--font-serif);
   font-style: italic;
@@ -88,44 +144,53 @@ body {
   line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--foreground);
-  border-left: 2px solid var(--foreground);
+  border-left: 2px solid var(--accent);
   padding-left: 1.5rem;
   margin: 2.5rem 0;
 }
 
-/* Subtle entrance animation */
+/* Subtle entrance animation — used by initial hero reveal */
 @keyframes editorial-rise {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.rise   { animation: editorial-rise 0.7s ease forwards; }
-.rise-2 { animation: editorial-rise 0.7s 0.1s ease both; }
-.rise-3 { animation: editorial-rise 0.7s 0.2s ease both; }
-.rise-4 { animation: editorial-rise 0.7s 0.3s ease both; }
+.rise   { animation: editorial-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.rise-2 { animation: editorial-rise 1s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rise-3 { animation: editorial-rise 1s 0.30s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rise-4 { animation: editorial-rise 1s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-/* Editorial eyebrow — sentence case, no shouting */
+/* Eyebrow / small label */
 .eyebrow {
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   letter-spacing: 0.01em;
   color: var(--muted);
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 9999px;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 
-/* Logo lockup — dark mark on light background */
+/* Logo lockup */
 .mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
   border-radius: 8px;
-  background: #0A1124;
+  background: #0A0B0F;
   overflow: hidden;
   flex-shrink: 0;
 }
 
-/* Blog prose — editorial light theme */
+/* Blog prose — editorial light theme (legacy support) */
 .prose-blog { color: var(--foreground); line-height: 1.8; font-size: 1.0625rem; }
 .prose-blog h2 { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; margin: 3rem 0 1rem; letter-spacing: -0.02em; line-height: 1.15; }
 .prose-blog h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin: 2rem 0 0.75rem; letter-spacing: -0.01em; }
@@ -133,15 +198,36 @@ body {
 .prose-blog strong { font-weight: 600; }
 .prose-blog em { font-family: var(--font-serif); font-style: italic; font-size: 1.05em; }
 .prose-blog a { color: var(--foreground); text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 4px; }
-.prose-blog a:hover { text-decoration-color: var(--foreground); }
+.prose-blog a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 .prose-blog ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
 .prose-blog ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1.5rem; }
 .prose-blog li { margin-bottom: 0.4rem; }
-.prose-blog blockquote { border-left: 2px solid var(--foreground); padding-left: 1.5rem; font-style: italic; font-family: var(--font-serif); font-size: 1.25rem; margin: 2rem 0; line-height: 1.4; }
+.prose-blog blockquote { border-left: 2px solid var(--accent); padding-left: 1.5rem; font-style: italic; font-family: var(--font-serif); font-size: 1.25rem; margin: 2rem 0; line-height: 1.4; }
 .prose-blog code { font-family: var(--font-geist-mono); font-size: 0.85em; background: rgba(0,0,0,0.04); padding: 0.15em 0.4em; border-radius: 4px; }
 .prose-blog pre { background: rgba(0,0,0,0.03); border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1.5rem; }
 .prose-blog pre code { background: none; padding: 0; font-size: 0.875rem; }
 .prose-blog hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+/* Section divider — small editorial flourish: rule with a center dot */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 4rem 0;
+}
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--rule);
+}
+.section-divider span {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 9999px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
 
 /* Skip link for accessibility */
 .skip-to-content {
@@ -153,3 +239,79 @@ body {
   color: var(--background);
 }
 .skip-to-content:focus { left: 50%; transform: translateX(-50%); top: 0; }
+
+/* ─────────────────────────────────────────────────────────────
+   Animated dummy sketch — sits behind/beside the hero
+   ───────────────────────────────────────────────────────────── */
+
+/* Traced crash-test dummy SVG (OpenCV contour trace of the reference image) */
+.dummy-sketch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(160px, 24vw, 270px);
+  pointer-events: none;
+  color: var(--accent);
+  opacity: 0.7;
+  z-index: 0;
+}
+
+.dummy-sketch svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Each path draws itself in via stroke-dasharray. pathLength="1" on every
+   path in the SVG normalizes the animation length, and --i (per-path index
+   set inline) gives each one its own stagger. */
+.dummy-sketch path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: sketch-trace 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.18s);
+}
+
+@keyframes sketch-trace {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes sketch-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes sketch-pop {
+  from { opacity: 0; transform: scale(0); transform-origin: 200px 240px; }
+  to   { opacity: 1; transform: scale(1); transform-origin: 200px 240px; }
+}
+
+/* Hero needs to be the positioning context for the sketch */
+.hero-stage {
+  position: relative;
+}
+.hero-stage > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .dummy-sketch {
+    top: auto;
+    bottom: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50vw;
+    opacity: 0.42;
+  }
+}
+
+/* Respect users who don't want motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .italic-stroke::after { transform: scaleX(1); }
+  .dummy-sketch path { stroke-dashoffset: 0; }
+}
