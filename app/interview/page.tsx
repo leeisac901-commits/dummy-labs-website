@@ -39,10 +39,10 @@ function Header() {
         </Link>
         <nav className="text-sm">
           <Link
-            href="/blog"
+            href="/"
             className="text-muted hover:text-foreground transition-colors underline decoration-rule hover:decoration-foreground underline-offset-4"
           >
-            Writing
+            Home
           </Link>
         </nav>
       </div>

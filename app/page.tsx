@@ -31,10 +31,10 @@ function Header() {
         </Link>
         <nav className="text-sm">
           <Link
-            href="/blog"
+            href="/interview"
             className="text-muted hover:text-foreground transition-colors underline decoration-rule hover:decoration-foreground underline-offset-4"
           >
-            Writing
+            Be interviewed
           </Link>
         </nav>
       </div>
